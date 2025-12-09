@@ -1,0 +1,1 @@
+This is a Python program that randomly generates a sentence (with a randomly determined length based on the original distribution) of biblical verse (where all the words used are randomly selected from the words collected from the authentic King James Version Bible). 
