@@ -9,29 +9,32 @@ import requests
 
 
 def get_kjv() -> str:
-    response = requests.get('https://openbible.com/textfiles/kjv.txt')
+    response = requests.get("https://openbible.com/textfiles/kjv.txt")
     return response.text
 
+
 import string
+
 
 def remove_punctuation(s) -> str:
     ret = []
     for c in s:
         if c not in string.punctuation:
             ret.append(c)
-    return ''.join(ret)
+    return "".join(ret)
 
 
 def process_kjv(kjv) -> tuple[list[str], list[int]]:
     words = []
     line_lengths = []
-    lines = kjv.split('\n')
+    lines = kjv.split("\n")
     for line in lines:
         line = remove_punctuation(line)
         line_words = line.split()[2:]
         words.extend(line_words)
         line_lengths.append(len(line_words))
     return words, line_lengths
+
 
 import random
 
@@ -49,18 +52,21 @@ def gen_verse(words: list[str], line_lengths: list[int]) -> str:
     verse = []
     for _ in range(length):
         verse.append(gen_word(words))
-    verse = ' '.join(verse) + '.'
+    verse = " ".join(verse) + "."
     verse = verse[0].upper() + verse[1:]
     return verse
+
 
 def main():
     print("--- The Oracle ---")
     print("Getting KJV Bible ready...")
     try:
-      kjv = get_kjv()
+        kjv = get_kjv()
     except:
-      print("Failed to fetch the KJV file, there is likely some issue with Colab if you ever have this error reported, wait for a while and try again.")
-      return
+        print(
+            "Failed to fetch the KJV file, there is likely some issue with Colab if you ever have this error reported, wait for a while and try again."
+        )
+        return
     words, line_lengths = process_kjv(kjv)
     print("Press ENTER to get a new verse, press Ctrl-C or enter 'quit' to exit.")
     while True:
@@ -68,12 +74,12 @@ def main():
             cmd = input().lower()
         except KeyboardInterrupt:
             break
-        if cmd == 'quit':
+        if cmd == "quit":
             break
         verse = gen_verse(words, line_lengths)
         print(verse)
-    print('Exit.')
+    print("Exit.")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
